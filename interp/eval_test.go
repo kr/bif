@@ -10,6 +10,7 @@ func TestEval1(t *testing.T) {
 	var e *Env
 	e = e.With("s", reflect.ValueOf("s"))
 	e = e.With("p", reflect.ValueOf(Package{"X": reflect.ValueOf(1)}))
+	e = e.With("t", reflect.ValueOf(struct{ X int }{1}))
 	e = e.With("identity", reflect.ValueOf(func(s string) string { return s }))
 	cases := []struct {
 		x string
@@ -18,6 +19,7 @@ func TestEval1(t *testing.T) {
 		{`"a"`, "a"},
 		{`s`, "s"},
 		{`p.X`, 1},
+		{`t.X`, 1},
 		{`identity("a")`, "a"},
 	}
 

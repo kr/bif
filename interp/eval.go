@@ -112,6 +112,7 @@ func evalSelector(x *ast.SelectorExpr, e *Env) reflect.Value {
 	}
 	switch v.Kind() {
 	case reflect.Struct:
+		// TODO(kr): unexported fields in target package
 		return v.FieldByName(x.Sel.Name)
 	}
 	panic(fmt.Errorf("cannot select from %v", v))

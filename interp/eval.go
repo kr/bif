@@ -9,15 +9,11 @@ import (
 	"strconv"
 )
 
+// A nil *Env represents the empty environment.
 type Env struct {
 	s string
 	v reflect.Value
 	e *Env
-}
-
-// Env0 returns the empty environment.
-func Env0() *Env {
-	return nil
 }
 
 func (e *Env) get(name string) reflect.Value {

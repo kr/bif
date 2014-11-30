@@ -104,7 +104,7 @@ import (
 )
 
 func BifMain() {
-	env := interp.Env0()
+	var env *interp.Env
 {{range .Globals}}
 	env = env.Augment({{.Name|printf "%q"}}, reflect.ValueOf({{.Name}}))
 {{end}}

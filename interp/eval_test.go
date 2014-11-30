@@ -7,7 +7,7 @@ import (
 )
 
 func TestEval1(t *testing.T) {
-	e := Env0()
+	var e *Env
 	e = e.Augment("s", reflect.ValueOf("s"))
 	e = e.Augment("p", reflect.ValueOf(Package{"X": reflect.ValueOf(1)}))
 	e = e.Augment("identity", reflect.ValueOf(func(s string) string { return s }))

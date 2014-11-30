@@ -8,9 +8,9 @@ import (
 
 func TestEval1(t *testing.T) {
 	var e *Env
-	e = e.Augment("s", reflect.ValueOf("s"))
-	e = e.Augment("p", reflect.ValueOf(Package{"X": reflect.ValueOf(1)}))
-	e = e.Augment("identity", reflect.ValueOf(func(s string) string { return s }))
+	e = e.With("s", reflect.ValueOf("s"))
+	e = e.With("p", reflect.ValueOf(Package{"X": reflect.ValueOf(1)}))
+	e = e.With("identity", reflect.ValueOf(func(s string) string { return s }))
 	cases := []struct {
 		x string
 		w interface{}

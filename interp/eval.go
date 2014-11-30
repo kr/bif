@@ -26,7 +26,7 @@ func (e *Env) get(name string) reflect.Value {
 	return e.e.get(name)
 }
 
-func (e *Env) Augment(name string, v reflect.Value) *Env {
+func (e *Env) With(name string, v reflect.Value) *Env {
 	return &Env{name, v, e}
 }
 

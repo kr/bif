@@ -34,18 +34,26 @@ func (e *Env) Augment(name string, v reflect.Value) *Env {
 	return &Env{name, v, e}
 }
 
-func Eval(x ast.Expr, e *Env) (vals []reflect.Value, err error) {
-	defer func() {
-		if v := recover(); v != nil {
-			if e, ok := v.(error); ok {
-				err = e
-			} else {
-				err = fmt.Errorf("%v", v)
-			}
+func catch(err *error) {
+	if v := recover(); v != nil {
+		if e, ok := v.(error); ok {
+			*err = e
+		} else {
+			*err = fmt.Errorf("%v", v)
 		}
-	}()
+	}
+}
+
+func Eval(x ast.Expr, e *Env) (vals []reflect.Value, err error) {
+	defer catch(&err)
 	vals = eval(x, e)
 	return vals, nil
+}
+
+func Eval1(x ast.Expr, e *Env) (v reflect.Value, err error) {
+	defer catch(&err)
+	v = eval1(x, e)
+	return v, nil
 }
 
 // eval evaluates x in e

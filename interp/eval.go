@@ -55,6 +55,7 @@ func Eval1(x ast.Expr, e *Env) (v reflect.Value, err error) {
 // eval evaluates x in e
 // and returns the resulting values.
 func eval(x ast.Expr, e *Env) []reflect.Value {
+	// TODO(kr): untyped constant expressions
 	var v reflect.Value
 	switch x := x.(type) {
 	case *ast.BasicLit:
@@ -84,6 +85,11 @@ func evalBasicLit(x *ast.BasicLit) reflect.Value {
 	case token.STRING:
 		s, _ := strconv.Unquote(x.Value)
 		return reflect.ValueOf(s)
+	case token.INT:
+		// TODO(kr): treat untyped constant values correctly.
+		// for now we convert an INT literal to an int.
+		n, _ := strconv.Atoi(x.Value)
+		return reflect.ValueOf(n)
 	default:
 		panic(fmt.Errorf("cannot eval %v literal", x.Kind))
 	}

@@ -17,6 +17,7 @@ func TestEval1(t *testing.T) {
 		w interface{}
 	}{
 		{`"a"`, "a"},
+		{`1`, 1},
 		{`s`, "s"},
 		{`p.X`, 1},
 		{`t.X`, 1},

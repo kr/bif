@@ -97,30 +97,31 @@ var (
 package main
 
 import (
-	"os"
 	"reflect"
 
 	"github.com/kr/bif/interp"
 )
 
-func BifMain() {
+func BifEnv() *interp.Env {
 	var env *interp.Env
 {{range .Globals}}
 	env = env.With({{.Name|printf "%q"}}, reflect.ValueOf({{.Name}}))
 {{end}}
-
-	// TODO(kr): packages
-	interp.Run(env, nil)
-	os.Exit(0)
+	return env
 }
 `))
 	bifmainTmpl = template.Must(template.New("main").Parse(`
 package main
 
-import p {{.ImportPath|printf "%q"}}
+import (
+	p {{.ImportPath|printf "%q"}}
+	"github.com/kr/bif/interp"
+)
 
 func main() {
-	p.BifMain()
+	// TODO(kr): packages
+	env := p.BifEnv()
+	interp.Run(env, nil)
 }
 `))
 )

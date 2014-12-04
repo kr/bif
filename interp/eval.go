@@ -66,6 +66,8 @@ func eval(x ast.Expr, e *Env) []reflect.Value {
 		return evalCall(x, e)
 	case *ast.SelectorExpr:
 		v = evalSelector(x, e)
+	case *ast.BinaryExpr:
+		v = evalBinary(x, e)
 	default:
 		panic(fmt.Errorf("cannot eval %T", x))
 	}
@@ -122,4 +124,20 @@ func evalSelector(x *ast.SelectorExpr, e *Env) reflect.Value {
 		return v.FieldByName(x.Sel.Name)
 	}
 	panic(fmt.Errorf("cannot select from %v", v))
+}
+
+func evalBinary(exp *ast.BinaryExpr, env *Env) reflect.Value {
+	x := eval1(exp.X, env)
+	y := eval1(exp.Y, env)
+	if x.Type() != y.Type() {
+		panic(fmt.Errorf("mismatched types %v and %v", x.Type(), y.Type()))
+	}
+	f, ok := binops[exp.Op][x.Kind()]
+	if !ok {
+		panic(fmt.Errorf("operator %v not defined on %v", exp.Op, x.Kind()))
+	}
+	x0 := x.Convert(kindtypes[x.Kind()])
+	y0 := y.Convert(kindtypes[y.Kind()])
+	v := f(x0.Interface(), y0.Interface())
+	return reflect.ValueOf(v).Convert(x.Type())
 }

@@ -21,7 +21,7 @@ func Run(env *Env, packages map[string]Package) {
 			continue
 		}
 		for _, v := range a {
-			fmt.Println(v.Interface())
+			fmt.Printf("%+v\n", v.Interface())
 		}
 	}
 	fmt.Println()

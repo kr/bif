@@ -94,7 +94,7 @@ func copyfile(src, dst string) error {
 
 var (
 	pmainTmpl = template.Must(template.New("main").Parse(`
-package main
+package {{.Name}}
 
 import (
 	"reflect"
@@ -138,7 +138,10 @@ func gen(name string, p *build.Package) error {
 		return err
 	}
 
-	var x = struct{ Globals []sym }{tab}
+	var x = struct {
+		Globals []sym
+		Name    string
+	}{tab, p.Name}
 
 	if err := pmainTmpl.Execute(f, x); err != nil {
 		return err

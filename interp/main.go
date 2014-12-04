@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func Run(env *Env, packages map[string]Package) {
+func REPL(env *Env) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for prompt("; ", scanner) {
 		x, err := parser.ParseExpr(scanner.Text())

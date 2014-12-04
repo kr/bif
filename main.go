@@ -121,7 +121,7 @@ import (
 func main() {
 	// TODO(kr): packages
 	env := p.BifEnv()
-	interp.Run(env, nil)
+	interp.REPL(env)
 }
 `))
 )
